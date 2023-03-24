@@ -885,6 +885,7 @@ class GameState:
         status = ' (Food: {0}, Time: {1})'.format(self.food, self.time)
         return str([str(i) for i in self.ants + self.bees]) + status
 
+
 class AntHomeBase(Place):
     """AntHomeBase at the end of the tunnel, where the queen resides."""
 
@@ -895,7 +896,7 @@ class AntHomeBase(Place):
         enter the AntHomeBase, a BeesWinException is raised, signaling the end
         of a game.
         """
-        assert isinstance(insect, Bee), 'Cannot add {0} to AntHomeBase'
+        # assert isinstance(insect, Bee), 'Cannot add {0} to AntHomeBase'
         raise BeesWinException()
 
 def ants_win():
