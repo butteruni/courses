@@ -4,9 +4,6 @@
 
 project：cats, ants
 
-hw：1-4
+hw：1-5
 
-lab：1-6
-
-### 已知问题
-ants web端奇怪bug
+lab：1-8
