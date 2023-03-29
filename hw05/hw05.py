@@ -36,6 +36,45 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, name, price):
+        self.name = name
+        self.cost = price
+        self.stock = 0
+        self.money = 0
+
+    def restock(self, num):
+        self.stock += num
+        return ('Current {0} stock: {1}'.format(self.name, self.stock))
+    
+    def add_funds(self, invest):
+        if (self.stock == 0):
+            return ('Inventory empty. Restocking required. Here is your ${0}.'.format(invest))
+        else:
+            self.money += invest
+            return ('Current balance: ${0}'.format(self.money))
+    
+    def vend(self):
+        if (self.stock == 0 and self.money == 0):
+            return ('Inventory empty. Restocking required.')
+        elif (self.stock == 0):
+            t = self.money
+            self.money = 0
+            return ('Inventory empty. Restocking required. Here is your ${0}.'.format(t))
+        elif (self.stock > 0):
+            if (self.money < self.cost):
+                grid = self.cost - self.money
+                return ('You must add ${0} more funds.'.format(grid))
+            if (self.money == self.cost):
+                self.stock -= 1
+                self.money = 0
+                return ('Here is your {0}.'.format(self.name))
+            if (self.money > self.cost):
+                self.stock -= 1
+                change = self.money - self.cost
+                self.money = 0
+                return ('Here is your {0} and ${1} change.'.format(self.name, change))
+            
+
 
 
 class Mint:
@@ -74,9 +113,12 @@ class Mint:
 
     def create(self, kind):
         "*** YOUR CODE HERE ***"
+        return kind(self.year)
+
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Mint.current_year
 
 class Coin:
     def __init__(self, year):
@@ -84,6 +126,8 @@ class Coin:
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        addition = max(0, Mint.current_year - self.year - 50)
+        return self.cents + addition
 
 class Nickel(Coin):
     cents = 5
@@ -108,7 +152,20 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
-
+    if n < 10:
+        return Link(n)
+    else :
+        front, left = get_first_number(n)
+        return Link(front, store_digits(left))
+def get_first_number(n):
+    assert n >= 0
+    first, left = n, 0
+    cnt = 0
+    while(first >= 10):
+        first //= 10
+        cnt += 1
+    left = n - first * pow(10, cnt)
+    return first, left
 
 def is_bst(t):
     """Returns True if the Tree t has the structure of a valid BST.
@@ -136,6 +193,35 @@ def is_bst(t):
     False
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        return True
+    else:
+        len_branch = len(t.branches)
+        if len_branch > 2:
+            return False
+        elif len_branch == 1:
+            return is_bst(t.branches[0])
+        else:
+            left = get_max(t.branches[0]) <= t.label
+            right = get_min(t.branches[1]) > t.label
+            return left and right and all(is_bst(i) for i in t.branches)
+     
+def get_min(t):
+    if t.is_leaf():
+        return t.label
+    elif len(t.branches) == 1:
+        return min(t.label, t.branches[0].label)
+    else:
+        return get_min(t.branches[0])
+
+
+def get_max(t):
+    if t.is_leaf():
+        return t.label
+    elif len(t.branches) == 1:
+        return max(t.label, t.branches[0].label)
+    else:
+        return get_max(t.branches[1])
 
 
 def preorder(t):
@@ -149,7 +235,14 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
-
+    if t.is_leaf():
+        return [t.label]
+    else:
+        pre_order = []
+        pre_order.append(t.label)
+        for i in t.branches:
+            pre_order.extend(preorder(i))
+        return pre_order
 
 def path_yielder(t, value):
     """Yields all possible paths from the root of t to a node with the label value
@@ -187,11 +280,13 @@ def path_yielder(t, value):
     """
 
     "*** YOUR CODE HERE ***"
-
-    for _______________ in _________________:
-        for _______________ in _________________:
-
-            "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [value]
+    for i in t.branches:
+        for j in path_yielder(i, value):
+            lst = [t.label]
+            lst.extend(j)
+            yield lst
 
 
 class Link:

@@ -8,6 +8,13 @@ def convert_link(link):
     []
     """
     "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return []
+    lst = []
+    while link is not Link.empty:
+        lst.append(link.first)
+        link = link.rest
+    return lst
 
 
 def every_other(s):
@@ -28,6 +35,15 @@ def every_other(s):
     Link(4)
     """
     "*** YOUR CODE HERE ***"
+    ls, st = 0, s
+    while s is not Link.empty:
+        if not (ls & 1) and s.rest is not Link.empty:
+            s.rest = s.rest.rest
+            ls += 2
+        else:
+            ls += 1
+        s = s.rest
+    s = st
 
 
 def cumulative_mul(t):
@@ -40,6 +56,13 @@ def cumulative_mul(t):
     Tree(105, [Tree(15, [Tree(5)]), Tree(7)])
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        pass
+    else:
+        for i in t.branches:
+            cumulative_mul(i)
+            t.label *= i.label
+
 
 
 def has_cycle(link):
