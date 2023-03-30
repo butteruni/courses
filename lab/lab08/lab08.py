@@ -80,6 +80,13 @@ def has_cycle(link):
     False
     """
     "*** YOUR CODE HERE ***"
+    st = link
+    while link is not Link.empty:
+        link = link.rest
+        if link is st:
+            return True
+    return False
+
 
 def has_cycle_constant(link):
     """Return whether link contains a cycle.
@@ -93,6 +100,9 @@ def has_cycle_constant(link):
     False
     """
     "*** YOUR CODE HERE ***"
+    if has_cycle(link):
+        return True
+    return False
 
 
 def reverse_other(t):
@@ -109,6 +119,20 @@ def reverse_other(t):
     Tree(1, [Tree(8, [Tree(3, [Tree(5), Tree(4)]), Tree(6, [Tree(7)])]), Tree(2)])
     """
     "*** YOUR CODE HERE ***"
+    def helper(t, odd=True):
+        if t.is_leaf():
+            return
+        elif not odd:
+            for i in t.branches:
+                helper(i, not odd)
+        else:
+            label_list = [i.label for i in t.branches]
+            label_list = label_list[::-1]
+            for i in range(len(t.branches)):
+                t.branches[i].label = label_list[i]
+                helper(t.branches[i], not odd)
+            return
+    helper(t)
 
 
 class Link:
