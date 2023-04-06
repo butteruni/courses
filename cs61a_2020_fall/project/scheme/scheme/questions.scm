@@ -72,16 +72,18 @@
 (define quoted? (check-special 'quote))
 (define let?    (check-special 'let))
 
+(define (zip pairs)
+  (list (map car pairs) (map cadr pairs)))
 ;; Converts all let special forms in EXPR into equivalent forms using lambda
 (define (let-to-lambda expr)
   (cond ((atom? expr)
          ; BEGIN PROBLEM EC
-         'replace-this-line
+            expr
          ; END PROBLEM EC
          )
         ((quoted? expr)
          ; BEGIN PROBLEM EC
-         'replace-this-line
+            expr
          ; END PROBLEM EC
          )
         ((or (lambda? expr)
@@ -90,19 +92,22 @@
                (params (cadr expr))
                (body   (cddr expr)))
            ; BEGIN PROBLEM EC
-           'replace-this-line
+              (append (list form params) (map let-to-lambda body))
            ; END PROBLEM EC
            ))
         ((let? expr)
          (let ((values (cadr expr))
                (body   (cddr expr)))
            ; BEGIN PROBLEM EC
-           'replace-this-line
+            (define form (car (zip values)))
+            (define params (map let-to-lambda (cadr (zip values))))
+            (define body (map let-to-lambda body))
+            (cons (append (list 'lambda form) body) params)
            ; END PROBLEM EC
            ))
         (else
          ; BEGIN PROBLEM EC
-         'replace-this-line
+         (map let-to-lambda expr)
          ; END PROBLEM EC
          )))
 
