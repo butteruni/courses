@@ -289,6 +289,11 @@ class LambdaFunction(Value):
             raise TypeError("Oof! Cannot apply number {} to arguments {}".format(
                 comma_separated(self.parameters), comma_separated(arguments)))
         "*** YOUR CODE HERE ***"
+        apply_env = self.parent.copy()
+        for x, y in zip(self.parameters, arguments):
+            apply_env[x] = y
+        return self.body.eval(apply_env)
+
 
     def __str__(self):
         definition = LambdaExpr(self.parameters, self.body)
