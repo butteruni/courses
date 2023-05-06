@@ -123,7 +123,8 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
 }
 
 //Screen space rasterization
-void rst::rasterizer::rasterize_triangle(const Triangle& t) {
+void rst::rasterizer::rasterize_triangle(const Triangle& t) 
+{
     auto v = t.toVector4();
     
     // TODO : Find out the bounding box of current triangle.
@@ -166,7 +167,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
             depth_buf[buf_index] = z_interpolated;
 
             // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
-            set_pixel(Vector3f(x, y, 1), t.getColor());
+            set_pixel(Vector3f(x, y, 1.0f), t.getColor());
         }
     }
 }
