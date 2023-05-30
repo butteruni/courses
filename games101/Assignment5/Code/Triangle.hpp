@@ -11,6 +11,17 @@ bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f
     // that's specified bt v0, v1 and v2 intersects with the ray (whose
     // origin is *orig* and direction is *dir*)
     // Also don't forget to update tnear, u and v.
+    Vector3f s_0 = orig - v0;
+    Vector3f e_1 = v1 - v0;
+    Vector3f e_2 = v2 - v0;
+    Vector3f s_1 = crossProduct(dir,e_2);
+    Vector3f s_2 = crossProduct(s_0,e_1);
+    tnear = dotProduct(s_2,e_2) / dotProduct(s_1,e_1);
+    u = dotProduct(s_1,s_0) / dotProduct(s_1,e_1);
+    v = dotProduct(s_2,dir) / dotProduct(s_1,e_1);
+    if(tnear >= 0 && u >= 0 && v >= 0 && (u + v) <= 1)
+        return true;
+
     return false;
 }
 
