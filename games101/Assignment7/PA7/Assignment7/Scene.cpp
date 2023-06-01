@@ -14,7 +14,6 @@ Intersection Scene::intersect(const Ray &ray) const
 {
     return this->bvh->Intersect(ray);
 }
-
 void Scene::sampleLight(Intersection &pos, float &pdf) const
 {
     float emit_area_sum = 0;

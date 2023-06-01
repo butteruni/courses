@@ -254,6 +254,10 @@ inline Intersection Triangle::getIntersection(Ray ray)
 
     // TODO find ray triangle intersection
 
+    if(t_tmp < 0)
+    {
+        return inter;
+    }
     inter.happened = true;
     inter.distance = t_tmp;
     inter.coords = ray(t_tmp);

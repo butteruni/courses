@@ -74,7 +74,19 @@ Intersection.hpp
 Vector.hpp
 /mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Vector.hpp
 
-/mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Scene.cpp
+/mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Renderer.cpp
+fstream
+-
+Scene.hpp
+/mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Scene.hpp
+Renderer.hpp
+/mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Renderer.hpp
+thread
+-
+mutex
+-
+
+/mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Renderer.hpp
 Scene.hpp
 /mnt/d/github/courses/games101/Assignment7/PA7/Assignment7/Scene.hpp
 
