@@ -1,3 +1,0 @@
-/mnt/d/github/courses/games101/Assignment6/PA6/Assignment6/build/CMakeFiles/rebuild_cache.dir
-/mnt/d/github/courses/games101/Assignment6/PA6/Assignment6/build/CMakeFiles/edit_cache.dir
-/mnt/d/github/courses/games101/Assignment6/PA6/Assignment6/build/CMakeFiles/RayTracing.dir

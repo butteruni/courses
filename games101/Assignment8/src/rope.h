@@ -1,10 +1,10 @@
 #ifndef ROPE_H
 #define ROPE_H
 
-#include "CGL/CGL.h"
 #include "mass.h"
 #include "spring.h"
 
+#include "CGL/CGL.h"
 using namespace std;
 
 namespace CGL {

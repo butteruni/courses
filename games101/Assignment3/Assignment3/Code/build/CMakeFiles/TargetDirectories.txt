@@ -1,3 +1,0 @@
-/mnt/d/github/courses/games101/Assignment3/Assignment3/Code/build/CMakeFiles/rebuild_cache.dir
-/mnt/d/github/courses/games101/Assignment3/Assignment3/Code/build/CMakeFiles/edit_cache.dir
-/mnt/d/github/courses/games101/Assignment3/Assignment3/Code/build/CMakeFiles/Rasterizer.dir

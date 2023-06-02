@@ -1,0 +1,20 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: D:/github/courses/games101/Assignment1/代码框架/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_17e4a && [1/2] Building C object CMakeFiles\cmTC_17e4a.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_17e4a.exe
+FAILED: cmTC_17e4a.exe 
+cmd.exe /C "cd . && "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_17e4a.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\mt.exe --manifests  -- C:\PROGRA~1\MICROS~4\2022\COMMUN~1\VC\Tools\MSVC\1433~1.316\bin\Hostx64\x64\link.exe /nologo CMakeFiles\cmTC_17e4a.dir\CMakeCCompilerABI.c.obj  /out:cmTC_17e4a.exe /implib:cmTC_17e4a.lib /pdb:cmTC_17e4a.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cmd.exe /C "cd /D D:\github\courses\games101\Assignment1\代码框架\out\build\x64-Debug\CMakeFiles\CMakeTmp && C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/github/courses/games101/Assignment1/代码框架/out/build/x64-Debug/CMakeFiles/CMakeTmp/cmTC_17e4a.exe -installedDir C:/vcpkg/installed/x64-windows/debug/bin -OutVariable out""
+The system cannot find the path specified.
+ninja: build stopped: subcommand failed.
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: D:/github/courses/games101/Assignment1/代码框架/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_3df11 && ninja: error: 'D:/github/courses/games101/Assignment1/代码框架/out/build/x64-Debug/CMakeFiles/CMakeTmp/testCCompiler.c', needed by 'CMakeFiles/cmTC_3df11.dir/testCCompiler.c.obj', missing and no known rule to make it
+
+
+

@@ -1,0 +1,7 @@
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/install/strip.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/install/local.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/install.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/list_install_components.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/rebuild_cache.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/edit_cache.dir
+/mnt/d/github/courses/games101/Assignment8/src/build/CMakeFiles/ropesim.dir
