@@ -56,11 +56,12 @@ namespace CGL {
             if (!m->pinned)
             {
                 // TODO (Part 2): Add the force due to gravity, then compute the new velocity and position
-                auto v = m->forces / (m->mass) + gravity;
-                m->position += m->velocity * delta_t;
-                m->velocity += v * delta_t;
+                m->forces += gravity * m->mass;
                 // TODO (Part 2): Add global damping
-
+                m->forces += -delta_t * m->velocity;
+                auto v = m->forces / (m->mass);
+                m->velocity += v * delta_t;
+                m->position += m->velocity * delta_t;
             }
 
             // Reset all forces on each mass
