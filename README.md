@@ -1,1 +1,1 @@
-这里是本人完成的一些课程
+this repo contains my route of learning computer science
