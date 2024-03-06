@@ -15,14 +15,21 @@ varying highp vec3 vFragPos;
 varying highp vec3 vNormal;
 
 // Shadow map related variables
-#define NUM_SAMPLES 20
+#define NUM_SAMPLES 50
 #define BLOCKER_SEARCH_NUM_SAMPLES NUM_SAMPLES
 #define PCF_NUM_SAMPLES NUM_SAMPLES
 #define NUM_RINGS 10
-
 #define EPS 1e-3
 #define PI 3.141592653589793
 #define PI2 6.283185307179586
+#define SHADOW_MAP_SIZE 2048.0
+#define FILTER_RADIUS 10.0
+#define NEAR_PLANE 0.01
+#define LIGHT_WORLD_SIZE 5.0
+#define LIGHT_FRUSTUM_WIDTH 400.0
+#define LIGHT_SIZE_UV (LIGHT_WORLD_SIZE / LIGHT_FRUSTUM_WIDTH)
+
+
 
 uniform sampler2D uShadowMap;
 
@@ -82,31 +89,82 @@ void uniformDiskSamples( const in vec2 randomSeed ) {
     radius = sqrt(sampleY);
   }
 }
-
 float findBlocker( sampler2D shadowMap,  vec2 uv, float zReceiver ) {
-	return 1.0;
+	
+  int blockerNumber = 0;
+  float blockerDepthSum = 0.0;
+  float posZFromLight = vPositionFromLight.z;
+  float searchRadius = LIGHT_SIZE_UV * (posZFromLight - NEAR_PLANE) / posZFromLight;
+  poissonDiskSamples(uv);
+  for(int i = 0;i < NUM_SAMPLES;i++)
+  {
+    float blockerDepth = unpack(texture2D(shadowMap, uv + poissonDisk[i] * searchRadius));
+    if(blockerDepth < zReceiver)
+    {
+      blockerNumber++;
+      blockerDepthSum += blockerDepth;
+    }
+  }
+  if(blockerNumber == 0)
+  {
+    return -1.0;
+  }
+  return blockerDepthSum / float(blockerNumber);
 }
 
-float PCF(sampler2D shadowMap, vec4 coords) {
+
+float useShadowMap(sampler2D shadowMap, vec4 shadowCoord){
+
+  float depth = unpack(texture2D(shadowMap, shadowCoord.xy));
+  float cur_depth = shadowCoord.z;
+
+
+  if(cur_depth >= depth + EPS)
+  {
+    return 0.0;
+  }
   return 1.0;
+}
+float PCF(sampler2D shadowMap, vec4 coords, float filterRadius) {
+
+  poissonDiskSamples(coords.xy);
+  float visibility = 0.0;
+  for(int i = 0; i < NUM_SAMPLES; i++)
+  {
+    vec2 offset = poissonDisk[i] * filterRadius;
+    vec4 shadowcoord = coords + vec4(offset, 0.0, 0.0);
+    float depth = useShadowMap(shadowMap, shadowcoord);
+    if(coords.z > depth + EPS)
+    {
+      visibility++;
+    }
+  }
+  return 1.0 - visibility / float(NUM_SAMPLES);
 }
 
 float PCSS(sampler2D shadowMap, vec4 coords){
 
   // STEP 1: avgblocker depth
 
+  float averageBlockerDepth = findBlocker(shadowMap, coords.xy, coords.z);
+  if(averageBlockerDepth < -EPS) // 没有blocker
+  {
+    return 1.0;
+  }
   // STEP 2: penumbra size
+  float penumbra = (coords.z - averageBlockerDepth) * LIGHT_SIZE_UV / averageBlockerDepth;
+
+  float filterRadius = penumbra;
 
   // STEP 3: filtering
+  return PCF(shadowMap, coords, filterRadius);
   
-  return 1.0;
+  // return 1.0;
 
 }
 
 
-float useShadowMap(sampler2D shadowMap, vec4 shadowCoord){
-  return 1.0;
-}
+
 
 vec3 blinnPhong() {
   vec3 color = texture2D(uSampler, vTextureCoord).rgb;
@@ -117,8 +175,7 @@ vec3 blinnPhong() {
   vec3 lightDir = normalize(uLightPos);
   vec3 normal = normalize(vNormal);
   float diff = max(dot(lightDir, normal), 0.0);
-  vec3 light_atten_coff =
-      uLightIntensity / pow(length(uLightPos - vFragPos), 2.0);
+  vec3 light_atten_coff = uLightIntensity / pow(length(uLightPos - vFragPos), 2.0);
   vec3 diffuse = diff * light_atten_coff * color;
 
   vec3 viewDir = normalize(uCameraPos - vFragPos);
@@ -133,13 +190,19 @@ vec3 blinnPhong() {
 
 void main(void) {
 
+  vec3 shadowCoord = vPositionFromLight.xyz / vPositionFromLight.w;
+  shadowCoord.xyz = (shadowCoord.xyz + 1.0) / 2.0;
   float visibility;
-  //visibility = useShadowMap(uShadowMap, vec4(shadowCoord, 1.0));
-  //visibility = PCF(uShadowMap, vec4(shadowCoord, 1.0));
-  //visibility = PCSS(uShadowMap, vec4(shadowCoord, 1.0));
+
+  float filterRadius = float(FILTER_RADIUS) / float(SHADOW_MAP_SIZE);
+
+  // visibility = useShadowMap(uShadowMap, vec4(shadowCoord, 1.0));
+  // visibility = PCF(uShadowMap, vec4(shadowCoord, 1.0), 
+  // filterRadius);
+  visibility = PCSS(uShadowMap, vec4(shadowCoord, 1.0));
 
   vec3 phongColor = blinnPhong();
 
-  //gl_FragColor = vec4(phongColor * visibility, 1.0);
-  gl_FragColor = vec4(phongColor, 1.0);
+  gl_FragColor = vec4(phongColor * visibility, 1.0);
+  // gl_FragColor = vec4(phongColor, 1.0);
 }
