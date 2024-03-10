@@ -46,7 +46,7 @@ samplePoints squareToCosineHemisphere(int sample_count){
             double sampley = (p + rng(gen)) / sample_side;
             
             double theta = 0.5f * acos(1 - 2*samplex);
-            double phi =  2 * M_PI * sampley;
+            double phi =  2 * PI * sampley;
             Vec3f wi = Vec3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
             float pdf = wi.z / PI;
             
@@ -67,7 +67,7 @@ Vec3f IntegrateEmu(Vec3f V, float roughness, float NdotV, Vec3f Ei) {
     Vec3f Eavg = Vec3f(0.0f);
     const int sample_count = 1024;
     Vec3f N = Vec3f(0.0, 0.0, 1.0);
-
+    return Ei * NdotV * 2.0f;
     samplePoints sampleList = squareToCosineHemisphere(sample_count);
     for (int i = 0; i < sample_count; i++) {
         Vec3f L = sampleList.directions[i];
@@ -77,8 +77,6 @@ Vec3f IntegrateEmu(Vec3f V, float roughness, float NdotV, Vec3f Ei) {
         float NoH = std::max(H.z, 0.0f);
         float VoH = std::max(dot(V, H), 0.0f);
         float NoV = std::max(dot(N, V), 0.0f);
-
-        // TODO: To calculate Eavg here
         
     }
 
@@ -100,10 +98,11 @@ int main() {
         // | 
         // | rough（i）
         // flip it if you want to write the data on picture 
-        uint8_t data[resolution * resolution * 3];
+
+        uint8_t data[128 * 128 * 3];
         float step = 1.0 / resolution;
         Vec3f Eavg = Vec3f(0.0);
-		for (int i = 0; i < resolution; i++) 
+		for (int i = 0; i < resolution; i++)  
         {
             float roughness = step * (static_cast<float>(i) + 0.5f);
 			for (int j = 0; j < resolution; j++) 

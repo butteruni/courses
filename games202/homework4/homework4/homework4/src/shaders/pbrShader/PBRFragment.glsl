@@ -22,27 +22,47 @@ const float PI = 3.14159265359;
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
    // TODO: To calculate GGX NDF here
-    
+    float a = roughness * roughness;
+    float a2 = a * a;
+    float NdotH = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH * NdotH;
+
+    float nom = a2;
+    float denom = (NdotH2 * (a2 - 1.0)) + 1.0;
+    denom = PI * denom * denom;
+    denom = max(denom, 0.0001);
+    return nom / denom;
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness)
 {
     // TODO: To calculate Smith G1 here
-    
-    return 1.0;
+    float a = roughness;
+    float k = (a * a) / 2.0;
+
+    float nom = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
+
 }
 
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 {
     // TODO: To calculate Smith G here
+    float NoL = max(dot(N, L), 0.0);
+    float NoV = max(dot(N, V), 0.0);
 
-    return 1.0;
+    float ggx2 = GeometrySchlickGGX(NoV, roughness);
+    float ggx1 = GeometrySchlickGGX(NoL, roughness);
+    return ggx1 * ggx2;
 }
 
 vec3 fresnelSchlick(vec3 F0, vec3 V, vec3 H)
 {
     // TODO: To calculate Schlick F here
-    return vec3(1.0);
+    vec3 F = F0 + (1.0 - F0) * pow(1.0 - clamp(dot(V,H),0.0,1.0),5.0);
+    return F; 
 }
 
 void main(void) {
@@ -75,6 +95,6 @@ void main(void) {
   vec3 color = Lo;
 
   color = color / (color + vec3(1.0));
-  color = pow(color, vec3(1.0/2.2)); 
+  color = pow(color, vec3(1.0/ 2.2)); 
   gl_FragColor = vec4(color, 1.0);
 }
