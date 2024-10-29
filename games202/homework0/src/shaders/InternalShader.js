@@ -1,14 +1,23 @@
 const LightCubeVertexShader = `
 attribute vec3 aVertexPosition;
+attribute vec3 aNormalPosition;
+attribute vec3 aTextureCoord;
 
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 
+varying highup vec2 vTextureCoord;
+varying highup vec3 vFragPos;
+varying highup vec3 vNormal;
 
 void main(void) {
 
+  vFragPos = aVertexPosition;
+  vNormal = aNormalPosition;
+
   gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
 
+  vTextureCoord = aTextureCoord;
 }
 `;
 
